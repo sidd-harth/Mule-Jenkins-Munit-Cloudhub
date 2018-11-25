@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	
+		<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="a39aca36-6fa5-4660-ac65-3fe64f20d85b" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="mainFlow" doc:id="8addaaf5-ad6d-48d0-bf9d-259f4cfc917b" >
+		<http:listener doc:name="GET /jenkins"  config-ref="HTTP_Listener_config" path="/jenkins"/>
+		<set-variable value="adas" doc:name="Set Variable" doc:id="b0cd792f-e796-4be7-a9bb-205391a40c3b" variableName="id"/>
+		<choice doc:name="Choice" doc:id="1a9383be-ec2c-4dc8-983c-88262b0b699b" >
+			<when expression="#[attributes.queryParams.name == 'sid']" >
+				<http:request method="GET" doc:name="Request - http://something.com" doc:id="8b4c9e05-d29b-491e-bd12-386334cf6bd0" url="https://jsonplaceholder.typicode.com/users/1" />
+			</when>
+			<otherwise >
+				<set-payload value="default1" doc:name="Set Payload" doc:id="27b119aa-46c9-4a14-9077-afa166b36bdb" />
+			</otherwise>
+		</choice>
+		<choice doc:name="Choice" doc:id="b2d241bf-11d7-4bac-8b87-dcc790de46a5" >
+			<when expression='#[(payload.id == 1) and (payload.name == "Leanne Graham")]' >
+				<set-payload value="#[payload.id]" doc:name="Payload = Main Sucess" mimeType="text/plain" />
+			</when>
+			<otherwise >
+				<set-payload value="default2" doc:name="Set Payload" doc:id="7a37fc99-8563-42be-b812-38258f3d32ce" />
+			</otherwise>
+		</choice>
+		
+	</flow>
+	
+	
+	</mule>

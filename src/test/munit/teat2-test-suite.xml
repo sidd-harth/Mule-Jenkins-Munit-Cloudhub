@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="teat2-test-suite.xml" />
+	<configuration-properties doc:name="Configuration properties" doc:id="7ca661fe-8721-465c-9d23-d07e3af0e479" file="transformedMUNIT.properties" />
+	<munit:test name="for-each-test-suite-mainFlowTest" description="Test" doc:id="666797fc-47ba-4cfe-9ee2-a632e5020d91" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="620dc825-0049-4117-b50c-1694aad9ea01" processor="http:request">
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[p('http-response')]" mediaType="application/json"/>
+
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		
+</munit:behavior>
+		<munit:execution >
+			<!--  <munit:set-event doc:name="Set Event" doc:id="cba037cf-bc02-4ad4-b069-b789606340a1" >
+				<munit:attributes value='#[attributes.headers.Tim == "name"]' />
+			</munit:set-event>  -->
+			<munit:set-event doc:name="Set Event" doc:id="1df3e180-6f24-444e-bd65-7e89a03d3873" >
+				<munit:attributes value="#[{queryParams : {'name':'sid'}}]" />
+			</munit:set-event>
+			<flow-ref doc:name="mainFlow" doc:id="cca867ac-6b4b-4e75-b216-6d1382da5d31" name="mainFlow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="57f26d8b-5165-4a88-a7cf-7b277f888e41" expression="#[payload]" is="#[MunitTools::equalTo(p('mock-response'))]" message="Invalid response"/>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>

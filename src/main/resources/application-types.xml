@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="asdas" format="json">
+      <types:example format="json" location="examples/json.json"/>
+    </types:type>
+  </types:catalog>
+</types:mule>
